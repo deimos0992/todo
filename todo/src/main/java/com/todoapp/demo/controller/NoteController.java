@@ -4,6 +4,7 @@ import com.todoapp.demo.model.Note;
 import com.todoapp.demo.repository.NoteRepository;
 import com.todoapp.demo.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +21,29 @@ public class NoteController {
     private NoteService noteservice;
 
 
-    @GetMapping("/all")
+    //Get All Note
+    @GetMapping("/notes")
     public ResponseEntity<List<Note>> getAllNotes(){
-
-        return ResponseEntity.ok(noteRepository.findAll());
+        return ResponseEntity.ok(noteservice.getAllNote());
     }
 
     // Save Single Note
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Note> postSingleNote(@RequestBody Note noteDto){
-
-        Note note = new Note();
-        note = noteservice.saveSingleNote(noteDto);
+        Note note = noteservice.saveSingleNote(noteDto);
         return ResponseEntity.ok(note);
+    }
+
+    //Get Single Note
+    @GetMapping("/note")
+    public ResponseEntity<Note> getSingleNote(@RequestParam Long id){
+        Note note = noteservice.getSingleNote(id);
+        return ResponseEntity.ok(note);
+    }
+
+    //Delete Note
+    @DeleteMapping("/deleteNote")
+    public ResponseEntity<HttpStatus> deleteSingleNote(@RequestParam Long id){
+        return ResponseEntity.ok(noteservice.deleteSingleNote(id));
     }
 }

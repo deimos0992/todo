@@ -15,3 +15,7 @@ spring:
     show-sql: true
   inizialize: true
 
+### No Stack Trace ###
+server:
+  error:
+    include-stacktrace: "never"
