@@ -35,4 +35,6 @@ build/
 ### Other File ###
 mvnw
 mvnw.cmd
-maven-
+maven-wrapper.jar
+maven-wrapper.properties
+MavenWrapperDownloader.java
