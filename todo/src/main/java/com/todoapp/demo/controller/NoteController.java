@@ -1,5 +1,6 @@
 package com.todoapp.demo.controller;
 
+import com.todoapp.demo.dto.NoteDto;
 import com.todoapp.demo.model.Note;
 import com.todoapp.demo.repository.NoteRepository;
 import com.todoapp.demo.service.NoteService;
@@ -29,7 +30,7 @@ public class NoteController {
 
     // Save Single Note
     @PostMapping("/save")
-    public ResponseEntity<Note> postSingleNote(@RequestBody Note noteDto){
+    public ResponseEntity<Note> postSingleNote(@RequestBody NoteDto noteDto){
         Note note = noteservice.saveSingleNote(noteDto);
         return ResponseEntity.ok(note);
     }
@@ -45,5 +46,14 @@ public class NoteController {
     @DeleteMapping("/deleteNote")
     public ResponseEntity<HttpStatus> deleteSingleNote(@RequestParam Long id){
         return ResponseEntity.ok(noteservice.deleteSingleNote(id));
+    }
+
+    //Update Note
+    @PutMapping("/updateNote")
+    public ResponseEntity<Note> updatedNote(
+            @RequestBody NoteDto note,
+            @RequestParam Long id){
+        Note updatedNote = noteservice.updatedNote(note, id);
+        return ResponseEntity.ok(updatedNote);
     }
 }

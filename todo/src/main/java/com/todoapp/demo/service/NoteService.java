@@ -1,8 +1,10 @@
 package com.todoapp.demo.service;
 
+import com.todoapp.demo.dto.NoteDto;
 import com.todoapp.demo.exception.ResourceNotFoundException;
 import com.todoapp.demo.model.Note;
 import com.todoapp.demo.repository.NoteRepository;
+import com.todoapp.demo.utils.Temporal;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,13 +30,13 @@ public class NoteService {
 
 
     @Transactional
-    public Note saveSingleNote(Note payload){
+    public Note saveSingleNote(NoteDto payload){
         log.info("INSERIMENTO SINGOLA NOTA");
         Note newNote = new Note();
         newNote.setTitolo(payload.getTitolo());
         newNote.setDescrizione(payload.getDescrizione());
-        newNote.setCreatedAt(Date.from(Instant.now()));
-        newNote.setUpdateAt(Date.from(Instant.now()));
+        newNote.setCreatedAt(Date.from(Temporal.curretDate()));
+        newNote.setUpdateAt(Date.from(Temporal.curretDate()));
         return noteRepository.save(newNote);
     }
 
@@ -59,6 +63,16 @@ public class NoteService {
         }else{
             return HttpStatus.NOT_FOUND;
         }
+    }
+
+    @Transactional
+    public Note updatedNote(NoteDto note, Long id){
+        Note oldNote = getSingleNote(id);
+        oldNote.setTitolo(note.getTitolo());
+        oldNote.setDescrizione(note.getDescrizione());
+        oldNote.setUpdateAt(Date.from(Temporal.curretDate()));
+        noteRepository.save(oldNote);
+        return oldNote;
     }
 
 
