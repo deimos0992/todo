@@ -35,6 +35,8 @@ public class NoteService {
         Note newNote = new Note();
         newNote.setTitolo(payload.getTitolo());
         newNote.setDescrizione(payload.getDescrizione());
+        newNote.setCreatedAt(Date.from(Temporal.curretDate()));
+        newNote.setUpdateAt(Date.from(Temporal.curretDate()));
         return noteRepository.save(newNote);
     }
 
